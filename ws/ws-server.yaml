@@ -36,3 +36,16 @@ spec:
       port: 9500
       targetPort: 9501
       nodePort: 30000
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ws-server
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ws-server
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
