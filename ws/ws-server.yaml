@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ws-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ws-server
+  template:
+    metadata:
+      labels:
+        app: ws-server
+    spec: 
+      containers:
+      - name: ws-server
+        image: ws-server:latest
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9501
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ws-server
+spec:
+  selector:
+    app: ws-server
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 9500
+      targetPort: 9501
+      nodePort: 30000
