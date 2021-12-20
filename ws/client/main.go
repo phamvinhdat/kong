@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
 	"log"
+	"math/rand"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 func main() {
@@ -18,12 +20,12 @@ func main() {
 		}
 
 		fmt.Printf("\x0c%d", nConn)
-		time.Sleep(time.Millisecond * 10)
+		time.Sleep(time.Millisecond * 30)
 	}
 }
 
 func makeConnection() error {
-	ws, _, err := websocket.DefaultDialer.Dial("ws://localhost:8000/v3/websocket", nil)
+	ws, _, err := websocket.DefaultDialer.Dial("ws://ws-server:9500/ws", nil)
 	if err != nil {
 		log.Println("connection err: ", err)
 		return err
@@ -31,10 +33,12 @@ func makeConnection() error {
 
 	go func() {
 		for {
-			msg := fmt.Sprintf("message: %s", time.Now())
-			err = ws.WriteMessage(websocket.BinaryMessage, []byte(msg))
-			if err != nil {
-				log.Fatal(err)
+			if randInt() == 50 {
+				msg := fmt.Sprintf("message: %s", time.Now())
+				err = ws.WriteMessage(websocket.BinaryMessage, []byte(msg))
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 
 			time.Sleep(time.Second * 2)
@@ -60,4 +64,8 @@ func printMsg(msg string, print bool) {
 	if print {
 		log.Printf("recv: %s\n", msg)
 	}
+}
+
+func randInt() int {
+	return rand.Intn(100)
 }
