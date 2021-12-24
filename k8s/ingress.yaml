@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingeress
+spec:
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - path: /v3
+            pathType: Prefix
+            backend:
+              service:
+                name: ws-server
+                port:
+                  number: 4200
+          - path: /bar
+            pathType: Prefix
+            backend:
+              service:
+                name: service2
+                port:
+                  number: 8080
