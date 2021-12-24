@@ -10,6 +10,9 @@ services:
           - /hello-english
 
   - name: ws-service
+    connect_timeout: 10000
+    read_timeout: 10000
+    write_timeout: 10000
     url: http://host.docker.internal:9501/ws
     routes:
       - name: ws-route
