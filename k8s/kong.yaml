@@ -21,7 +21,7 @@ spec:
         - name: KONG_DATABASE
           value: "off"
         - name: KONG_DECLARATIVE_CONFIG
-          value: "https://raw.githubusercontent.com/phamvinhdat/kong/k8s/kong.yml"
+          value: "/usr/local/kong/declarative/kong.yml"
         - name: KONG_PROXY_ACCESS_LOG
           value: "/dev/stdout"
         - name: KONG_PROXY_ACCESS_LOG
@@ -32,6 +32,14 @@ spec:
           value: "/dev/stderr"
         - name: KONG_ADMIN_LISTEN
           value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+        volumeMounts:
+        - mountPath: /usr/local/kong/declarative/kong.yml
+          name: kong-config
+      volumes:
+      - name: kong-config
+        hostPath:
+          path: /data/kong/kong.yml
+
 
 ---
 apiVersion: v1
@@ -41,7 +49,7 @@ metadata:
 spec:
   selector:
     app: kong
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8000
-      targetPort: 8000

@@ -11,21 +11,23 @@ import (
 
 func main() {
 	nConn := 0
+	err := makeConnection()
+	if err != nil {
+		time.Sleep(time.Second)
+		return
+	}
+
 	for {
 		nConn++
-		err := makeConnection()
-		if err != nil {
-			time.Sleep(time.Second)
-			continue
-		}
+
 
 		fmt.Printf("\x0c%d", nConn)
-		time.Sleep(time.Millisecond * 30)
+		time.Sleep(time.Millisecond * 1000)
 	}
 }
 
 func makeConnection() error {
-	ws, _, err := websocket.DefaultDialer.Dial("ws://ws-server:9500/ws", nil)
+	ws, _, err := websocket.DefaultDialer.Dial("ws://192.168.64.2/v3/ws", nil)
 	if err != nil {
 		log.Println("connection err: ", err)
 		return err

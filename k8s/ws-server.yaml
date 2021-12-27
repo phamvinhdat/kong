@@ -33,12 +33,10 @@ metadata:
 spec:
   selector:
     app: ws-server
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 9500
       targetPort: 9501
-      nodePort: 30000
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler

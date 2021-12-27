@@ -1,25 +1,22 @@
 _format_version: "2.1"
 
 services:
-  - name: hello-service
-    url: http://host.docker.internal:9500
-    routes:
-      - name: hello-route
-        paths:
-          - /hello-en
-          - /hello-english
-
   - name: ws-service
-    url: http://host.docker.internal:9501/ws
+    url: http://ws-server:9500/ws
     routes:
-      - name: ws-route
-        paths:
-          - /v3/ws
-          - /v3/websocket
-
-plugins:
-  - name: rate-limiting
-    service: hello-service
-    config:
-      minute: 5
-      policy: local
+    - name: ws-route
+      paths:
+      - /v3/ws
+      - /v3/websocket
+  - name: ws-info
+    url: http://ws-server:9500/ws-info
+    routes:
+    - name: ws-info-route
+      paths:
+      - /v3/ws-info
+#plugins:
+#  - name: rate-limiting
+#    service: hello-service
+#    config:
+#      minute: 5
+#      policy: local
